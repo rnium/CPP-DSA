@@ -65,10 +65,10 @@ void buildMinHeap(int heap[], int heapsize) {
 
 int main() {
     const int heapsize = 5;
-    int heap[] = {0, 7, 1, 2,-3,5}; // zero index should be null
-    buildMinHeap(heap, heapsize);
+    int heap[] = {0, 7, 1, 2,3,5}; // zero index should be null
+    buildMaxHeap(heap, heapsize);
     // minHeapify(heap, 5, 2);
     for (int i = 0; i <= heapsize; i++) {
-        cout << heap[i] << " ";
+        cout << heap[i] << ", ";
     }
 }
