@@ -63,12 +63,23 @@ void buildMinHeap(int heap[], int heapsize) {
     }
 }
 
+void heapSort(int heap[], int heapsize) {
+    for (int i = heapsize; i > 1; --i) {
+        int t = heap[1];
+        heap[1] = heap[heapsize];
+        heap[heapsize] = t;
+        heapsize--;
+        maxHeapify(heap, heapsize, 1);
+    }
+}
+
 int main() {
     const int heapsize = 5;
-    int heap[] = {0, 7, 1, 2,3,5}; // zero index should be null
+    int heap[] = {0, 7, 1, 2,3,5,11,21,4,6}; // zero index should be null
     buildMaxHeap(heap, heapsize);
     // minHeapify(heap, 5, 2);
+    heapSort(heap, heapsize);
     for (int i = 0; i <= heapsize; i++) {
-        cout << heap[i] << ", ";
+        cout << heap[i] << " ";
     }
 }
