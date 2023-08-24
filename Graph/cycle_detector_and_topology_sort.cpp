@@ -79,9 +79,9 @@ class TopologySort {
 };
 
 int main() {
-	int n = 4;
+	int n = 5;
 	AdjacencyList a_list(n);
-	vector<pair<int, int>> edges {{0, 1}, {1,2}, {3,2}};
+	vector<pair<int, int>> edges {{0, 1}, {0, 4}, {2, 4}, {2, 1}, {3, 0}, {4, 1}};
 	for (auto [u, v]: edges) {
 		a_list[u].push_back(v);
 	}
