@@ -9,6 +9,7 @@ class PathDoesNotExists: public runtime_error {
         PathDoesNotExists(): runtime_error("Path does not exists beetween the nodes") {}
 };
 
+// BFS Implementation
 class ShortestPath {
     private:
         AdjacencyList adj_list;
