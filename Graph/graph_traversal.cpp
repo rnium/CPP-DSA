@@ -64,7 +64,7 @@ int main() {
 		a_list[u].push_back(v);
 	}
     ShortestPath s_path(a_list);
-    for (int i: s_path.find_shortest_path(0, 6)) {
+    for (int i: s_path.find_shortest_path(0, 5)) {
         cout << i << " ";
     }
 }
