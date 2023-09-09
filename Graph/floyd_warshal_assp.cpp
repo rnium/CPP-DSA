@@ -13,7 +13,7 @@ class FloydWarshal {
         AdjacencyMatrix distances;
         AdjacencyMatrix predecessor;
         static constexpr int UNKNOWN = -1;
-        static constexpr int INF = INT32_MAX;
+        static constexpr int INF = 10'000;
         void initiate(AdjacencyMatrix& adj_matrix) {
             int n = adj_matrix.size();
             this->distances = AdjacencyMatrix(n, vector<int>(n, INF));
@@ -30,6 +30,7 @@ class FloydWarshal {
                     }
                 }
             }
+            
         }
         void compute(int n) {
             for (int k = 0; k < n; ++k) {
@@ -42,6 +43,12 @@ class FloydWarshal {
                     }
                 }
             }
+            // for (auto vec: this->predecessor) {
+            //     for (int i: vec) {
+            //         cout << i << " ";
+            //     }
+            //     cout << endl;
+            // }
         }
 
     public:
@@ -49,17 +56,19 @@ class FloydWarshal {
             initiate(adj_matrix);
             compute(adj_matrix.size());
         }
-        pair<int, vector<int>> shortestPath(int start, int end) {
-            int distance = distances[start][end];
+        pair<int, vector<int>> getShortestPath(int start, int end) {
+            int distance = this->distances[start][end];
             if (distance == INF) {
                 throw PathDoesNotExists();
             }
-            vector<int> path{end};
-            while (end != start) {
-                end = predecessor[start][end];
-                path.push_back(end);
+
+            vector<int> path {end};
+            int current = end;
+            while (current != start) {
+                current = this->predecessor[start][current];
+                path.push_back(current);
             }
-            reverse(path.begin(), path.end());
+            std::reverse(path.begin(), path.end());
             return make_pair(distance, path);
         }
 };
@@ -69,30 +78,30 @@ int main() {
     int n = 4;
     AdjacencyMatrix adjacencyMatrix(n, vector<int>(n, 0));
     vector<tuple<int, int, int>> edges {
-        make_tuple(0, 1, 6), 
-        make_tuple(0, 2, 3), 
-        make_tuple(0, 3, 12), 
-        make_tuple(1, 2, 9), 
-        make_tuple(1, 3, 5), 
-        make_tuple(2, 3, 2),
-        make_tuple(3, 1, 4),
-        make_tuple(3, 2, 1)
+        make_tuple(0, 1, 3), 
+        make_tuple(1, 0, 2), 
+        make_tuple(1, 2, 2), 
+        make_tuple(2, 1, 5), 
+        make_tuple(3, 2, 8), 
+        make_tuple(3, 0, 20), 
+        
     };
     for (auto [v, u, w] : edges) {
         adjacencyMatrix[v][u] = w;
     }
 
     FloydWarshal floydWarshall(adjacencyMatrix);
-    auto [distance, path] = floydWarshall.shortestPath(0, 3);
+    auto [distance, path] = floydWarshall.getShortestPath(3, 1);
     cout << "Shortest path from 0 to 3:";
     for (int u : path) {
         cout << " " << u;
     }
     cout << endl << "Length of the path: " << distance << endl;
     
-    // try {
-    //     floydWarshall.getShortestPath(2, 0);
-    // } catch (NoPathExistsException exc) {
-    //     cout << "No path from 2 to 0.";
-    // }  
+    try {
+        floydWarshall.getShortestPath(1, 3);
+    }
+    catch (exception exe) {
+        cout << "npt" << endl;
+    } 
 }
