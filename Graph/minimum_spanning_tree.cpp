@@ -4,6 +4,7 @@
 #include <iostream>
 #include <tuple>
 #include <numeric>
+#include <unordered_set>
 
 
 using namespace std;
@@ -68,6 +69,47 @@ public:
 			for (int v: this->adj_list[u]) {
 				pq.push(make_tuple(u,v,weights[u][v]));
 			}
+		}
+		return length;
+	}
+	void printList() {
+		printAdjList(this->weights);
+	}
+};
+
+
+class PrimsMST2 {
+private:
+	AdjacencyList adj_list;
+	Matrix weights;
+	int num_nodes;
+public:
+	PrimsMST2(int num_nodes, vector<Edge>& edges)
+		: num_nodes{num_nodes}
+		, adj_list{AdjacencyList(num_nodes)}
+		, weights{Matrix(num_nodes, vector<int>(num_nodes, 0))} {
+			for (auto [u,v,w]: edges) {
+				adj_list[u].push_back(v);
+				adj_list[v].push_back(u);
+				weights[u][v] = w;
+				weights[v][u] = w;
+			}
+	}
+	int mstLength() {
+		int u = 0, connectedNodeCount = 0, length = 0;
+		priority_queue<pair<int, int>> pq;
+		unordered_set<int> added_nodes;
+		while(++connectedNodeCount < num_nodes) {
+			added_nodes.insert(u);
+			for (int v: adj_list[u]) {
+				pq.push({-weights[u][v], v});
+			}
+			while (added_nodes.count(pq.top().second)) {
+				pq.pop();
+			}
+			length -= pq.top().first;
+			u = pq.top().second;
+			pq.pop();
 		}
 		return length;
 	}
@@ -165,7 +207,6 @@ int main() {
 		make_tuple(1, 2, 8),
 		make_tuple(2, 4, 6),
 	};
-	KruskalMST k1{n, edges};
-	k1.printEdges();
-	cout << k1.computeMST_length() << endl;
+	PrimsMST2 p2(n, edges);
+	cout << p2.mstLength() << endl;
 }
